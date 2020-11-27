@@ -1,0 +1,27 @@
+---
+- name: Deploy Centos6.10 Container
+  hosts: localhost
+  gather_facts: false
+  vars:
+    inventory:
+      - name: xml-ami
+        image: "centos:centos6.10"
+  roles:
+    - role: provision_docker
+      provision_docker_inventory: "{{ inventory }}"
+      provision_docker_privileged: True
+
+- import_playbook: ../playbook.yml
+  vars: 
+    #Disable some tasks that don't work in Docker
+    rhel6cis_rule_1_5_2: false
+    rhel6cis_rule_1_6_1_1: false
+    rhel6cis_rule_1_6_1_2: false
+    rhel6cis_rule_1_6_1_3: false
+    rhel6cis_rule_1_6_1_4: false
+    rhel6cis_rule_1_6_1_5: false
+    rhel6cis_rule_1_6_1: false
+    rhel6cis_rule_5_2_13: false
+    selinux_ports: false
+    
+ 
