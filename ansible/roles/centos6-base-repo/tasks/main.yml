@@ -1,0 +1,17 @@
+---
+- name: Fix CentOS Base Repo for RPM EOL
+  template:
+    src: CentOS-Base.repo.j2
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+  register: centos_base_repo_template
+
+- name: Update System Packages
+  yum:
+    name: '*'
+    state: latest
+
+# Install SSH as required for AMI and required for CIS role
+- name: Install SSH
+  yum:
+    name: openssh-server
+    state: present

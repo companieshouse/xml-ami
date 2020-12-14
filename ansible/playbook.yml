@@ -1,13 +1,8 @@
 ---
 - hosts: xml-ami
   become: true
-  pre_tasks:
-  #OpenSSH to be installed before RHEL-CIS
-  - name: Updating System Packages Before Ansible Run
-    yum:
-      name: '*'
-      state: latest
   roles:
+    - centos6-base-repo
     - role: RHEL6-CIS
       vars:
         rhel6cis_time_synchronization: chrony
