@@ -42,4 +42,17 @@
     - role: cloudwatch-agent
       vars:
         cwa_conf_json_file_content: "{{ lookup('file', 'files/cloudwatch-config.json') }}"
-        
+    - role: nagios_nrpe_client
+      vars: 
+        nrpe_server_allowed_hosts:
+          - 127.0.0.1
+        nrpe_plugin_packages:
+          - nagios-plugins-nrpe
+          - nagios-plugins
+          - nagios-plugins-disk
+        nrpe_command:
+          check_disk_all:
+            script: check_disk
+            option: -w 80 -c 90
+        nrpe_config: 
+          dont_blame_nrpe: 0
