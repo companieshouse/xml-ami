@@ -1,0 +1,15 @@
+s3_files:
+  - packages/oracle/oracle-instantclient11.2-basic-11.2.0.2.0.x86_64.rpm
+  - packages/oracle/oracle-instantclient11.2-devel-11.2.0.2.0.x86_64.rpm
+  - packages/oracle/oracle-instantclient11.2-sqlplus-11.2.0.2.0.x86_64.rpm
+  - application/xml/frontend/xml-frontend.tar.gz
+users:
+ - name: xml
+user_home_path: /home/xml
+pip_package: python-pip
+pip_install_packages:
+ - name: boto
+ - name: boto3
+   version: "1.4.7"
+ - name: botocore
+   version: "1.7.36"

@@ -1,0 +1,131 @@
+---
+- name: Add 127.0.0.1 to allow hosts
+  lineinfile:
+    path: /etc/hosts.allow
+    line: "ALL: 127.0.0.1"
+
+- name: Set SELinux to permissive
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Create groups
+  group:
+    name: "chlservices"
+    gid: "600"
+    state: present
+
+- name: Create users
+  user:
+    name: '{{ item.name }}'
+    groups: '{{ item.groups }}'
+    state: present
+  with_items: '{{ users }}'
+
+#- name: Install python 3.7 required packages
+  #become: true
+  #package:
+    #name:
+      #- python2-boto
+      #- python-pip
+      #- python34
+      #- gcc
+      #- openssl-devel
+      #- bzip2-devel
+      #- libffi-devel
+      #- zlib-devel
+      #- perl
+      #- libtool 
+      #- perl-core
+      #- wget
+    #state: present
+
+#- name: Download libffi-devel package
+  #get_url:
+    #url: "https://vault.centos.org/6.10/os/x86_64/Packages/libffi-devel-3.0.5-3.2.el6.x86_64.rpm"
+    #dest: /usr/src/
+
+#- name: Install libffi-devel package
+  #yum:
+     #name: "/usr/src/libffi-devel-3.0.5-3.2.el6.x86_64.rpm"
+     #state: present
+
+#- name: Copy python_setup.sh script
+  #copy:
+    #src: python_setup.sh
+    #dest: /tmp/python_setup.sh
+    #mode: 0755
+
+#- name: Run python_setup.sh script
+  #shell: "/tmp/python_setup.sh > /tmp/python_setup_logs.txt"
+
+- name: Download necessary setup files from s3
+  aws_s3:
+    bucket: s3://development-eu-west-2.resources.ch.gov.uk/
+    object: '{{ item }}'
+    dest: /tmp
+    mode: get
+  with_items: '{{ s3_files }}'
+
+- name: Unarchive tar files
+  unarchive:
+    remote_src: yes
+    src: /tmp/*.tar.gz
+    dest: /tmp
+
+- name: Install Oracle packages
+  yum:
+     name: /tmp/'{{ item }}'
+     state: present
+  with_items:
+    - oracle-instantclient11.2-basic-11.2.0.2.0.x86_64.rpm
+    - oracle-instantclient11.2-devel-11.2.0.2.0.x86_64.rpm
+    - oracle-instantclient11.2-sqlplus-11.2.0.2.0.x86_64.rpm
+
+- name: Ensure env variables are set
+  lineinfile:
+    path: "{{ user_home_path }}/.bash_profile"
+    line: '{{ item }}'
+  with_items:
+   - export LD_LIBRARY_PATH=/usr/lib/oracle/11.2/client64/lib/
+   - export TNS_ADMIN=/usr/lib/oracle/11.2/client64/lib/
+
+- name: Add config to ld.so.conf
+  lineinfile:
+    path: /etc/ld.so.conf
+    line: '{{ item }}'
+  with_items:
+    - /usr/lib/oracle/11.2/client64/lib/
+    - /usr/local/lib
+
+- name: Run ldconfig
+  command: /sbin/ldconfig
+
+- name: Remove any exisitng Perl binaries
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /usr/local/lib64/perl5 
+    - /usr/local/share/perl5 
+    - /usr/lib64/perl5/vendor_perl 
+    - /usr/share/perl5/vendor_perl 
+    - /usr/lib64/perl5 
+    - /usr/share/perl5
+
+- name: Install Perl binaries
+  copy:
+    src: /tmp/usr
+    dest: /usr
+ 
+- name: Delete installation files
+  find:
+    paths: /tmp
+    patterns: 'oracle-instantclient*,*.tar.gz,*perl5,*vendor_perl,python*'
+  register: files_to_delete
+
+- name: Remove installation files
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ files_to_delete.files }}"

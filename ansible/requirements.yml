@@ -1,6 +1,7 @@
----  
-- src: https://github.com/christiangda/ansible-role-amazon-cloudwatch-agent.git
-  name: cloudwatch-agent
-
+---
+roles:
+  - src: https://github.com/geerlingguy/ansible-role-pip
+    name: pip
+    version: "2.0.0"
 
 

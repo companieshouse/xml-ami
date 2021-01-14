@@ -1,0 +1,12 @@
+---
+users:
+  - name: xml
+    groups: chlservices
+
+user_home_path: /home/xml
+
+s3_files:
+  - packages/oracle/oracle-instantclient11.2-basic-11.2.0.2.0.x86_64.rpm
+  - packages/oracle/oracle-instantclient11.2-devel-11.2.0.2.0.x86_64.rpm
+  - packages/oracle/oracle-instantclient11.2-sqlplus-11.2.0.2.0.x86_64.rpm
+  - application/xml/frontend/xml-frontend.tar.gz

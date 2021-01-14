@@ -1,0 +1,18 @@
+---
+- name: Apply mod_cookietrack.so http module
+  copy:
+    src: /tmp
+    dest: /etc/httpd/modules/mod_cookietrack.so
+    mode: 0755
+ 
+- name: Delete installation files
+  find:
+    paths: /tmp
+    patterns: 'mod_cookietrack.so'
+  register: files_to_delete
+
+- name: Remove installation files
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ files_to_delete.files }}"
