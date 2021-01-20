@@ -184,7 +184,7 @@
 - name: Install Perl binaries
   copy:
     src: "/tmp/{{ item }}"
-    dest: /
+    dest: "/{{ item }}"
     remote_src: yes
   with_items:
     - usr/local/lib64/perl5
