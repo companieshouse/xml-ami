@@ -1,7 +1,7 @@
 ---
 - name: Copy xerces libraries
   copy:
-    src: /tmp/usr/local/lib/* 
+    src: /tmp/usr/local/lib/ 
     dest: /usr/local/lib/
     remote_src: yes
 

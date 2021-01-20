@@ -78,11 +78,11 @@
   ignore_errors: true
 
   # tmp debug 2
-- name: Find /tmp/usr output
-  command: ls -l /tmp/usr
+- name: Find /tmp/usr/local/lib output
+  command: ls -l /tmp/usr/local/lib
   register: tmpoutput2
   ignore_errors: true
-- name: Output of /tmp/usr
+- name: Output of /tmp/usr/local/lib
   ansible.builtin.debug:
     msg: "{{ tmpoutput2 }}"
   ignore_errors: true
