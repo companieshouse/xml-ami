@@ -129,6 +129,16 @@
 - name: Run ldconfig
   command: /sbin/ldconfig
 
+# /usr/lib64/perl5/vendor_perl before debug
+- name: Find /usr/lib64/perl5/vendor_perl output before
+  command: ls -l /usr/lib64/perl5/vendor_perl
+  register: usroutput27
+  ignore_errors: true
+- name: Output of /usr/lib64/perl5/vendor_perl before
+  ansible.builtin.debug:
+    msg: "{{ usroutput27 }}"
+  ignore_errors: true
+
 - name: Remove any exisitng Perl binaries
   file:
     path: '{{ item }}'
@@ -145,11 +155,31 @@
     msg: "{{ usroutput }}"
   ignore_errors: true
 
-- name: Install Perl binaries and other static content
+- name: Install Perl binaries
   copy:
     src: /tmp/usr
     dest: /
     remote_src: yes
+
+# /usr/local/lib64/perl5 debug
+- name: Find /usr/local/lib64/perl5 output after
+  command: ls -l /usr/local/lib64/perl5
+  register: usroutput25
+  ignore_errors: true
+- name: Output of /usr/local/lib64/perl5
+  ansible.builtin.debug:
+    msg: "{{ usroutput25 }}"
+  ignore_errors: true
+
+# /usr/lib64/perl5/vendor_perl debug
+- name: Find /usr/lib64/perl5/vendor_perl output after
+  command: ls -l /usr/lib64/perl5/vendor_perl
+  register: usroutput26
+  ignore_errors: true
+- name: Output of /usr/lib64/perl5/vendor_perl
+  ansible.builtin.debug:
+    msg: "{{ usroutput26 }}"
+  ignore_errors: true
 
 # /usr/local/lib debug
 - name: Find /usr/local/lib output after

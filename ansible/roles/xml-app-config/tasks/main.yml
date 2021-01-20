@@ -1,5 +1,5 @@
 ---
-- name: Copy xerces libraries
+- name: Install xerces libraries
   copy:
     src: /tmp/usr/local/lib/ 
     dest: /usr/local/lib/
@@ -25,6 +25,11 @@
     msg: "{{ usrliboutput2 }}"
   ignore_errors: true
 
+- name: Remove xerces libraries installation files
+  file:
+    path: /tmp/usr
+    state: absent
+ 
 - name: Start and enable httpd
   service:
     name: httpd
