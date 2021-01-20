@@ -5,8 +5,19 @@ users:
 
 user_home_path: /home/xml
 
-s3_files:
-  - packages/oracle/oracle-instantclient11.2-basic-11.2.0.2.0.x86_64.rpm
-  - packages/oracle/oracle-instantclient11.2-devel-11.2.0.2.0.x86_64.rpm
-  - packages/oracle/oracle-instantclient11.2-sqlplus-11.2.0.2.0.x86_64.rpm
-  - application/xml/frontend/xml-frontend.tar.gz
+tar_files:
+  - xml-frontend-app.tar.gz
+  - xml-frontend-static.tar.gz 
+
+s3_file_app_static: /application/xml/frontend/xml-frontend-static.tar.gz
+s3_file_app: /application/xml/frontend/xml-frontend-app.tar.gz
+s3_files_app_static_name: xml-frontend-static.tar.gz
+s3_files_app_name: xml-frontend-app.tar.gz
+
+http_config:
+  - httpd/conf.d/perl.conf
+  - httpd/conf/startup.pl
+  - httpd/conf/httpd.conf
+
+user: xml
+group: chlservices

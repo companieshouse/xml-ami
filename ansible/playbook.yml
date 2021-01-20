@@ -1,8 +1,11 @@
 ---
-- hosts: xml-frontend
+- name: AMI Build
+  hosts: xml-frontend
   become: true
+  gather_facts: yes
+  vars:
+    ansible_python_interpreter: /usr/local/bin/python3.6
   roles:
-    - role: pip
     - role: heritage-frontend-base
     - role: xml-app-config
 
