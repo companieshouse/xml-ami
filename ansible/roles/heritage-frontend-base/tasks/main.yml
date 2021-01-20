@@ -77,6 +77,17 @@
     msg: "{{ tmpoutput }}"
   ignore_errors: true
 
+  # tmp debug 2
+- name: Find /tmp/usr output
+  command: ls -l /tmp/usr
+  register: tmpoutput2
+  ignore_errors: true
+- name: Output of /tmp/usr
+  ansible.builtin.debug:
+    msg: "{{ tmpoutput2 }}"
+  ignore_errors: true
+
+
  # Using 3 separate tasks as using a list caused failures in concourse pipeline
 - name: Install Oracle packages - basic
   vars:
