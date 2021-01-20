@@ -141,9 +141,29 @@
 
 - name: Remove any exisitng Perl binaries
   file:
-    path: '{{ item }}'
+    path: "{{ item }}"
     state: absent
   with_items: '{{ perl_binaries }}'
+
+# /usr/local/lib64/perl5 debug
+- name: Find /usr/local/lib64/perl5 output after delete
+  command: ls -l /usr/local/lib64/perl5
+  register: usroutput30
+  ignore_errors: true
+- name: Output of /usr/local/lib64/perl5 after delete
+  ansible.builtin.debug:
+    msg: "{{ usroutput30 }}"
+  ignore_errors: true
+
+# /usr/lib64/perl5/vendor_perl debug
+- name: Find /usr/lib64/perl5/vendor_perl output after delete
+  command: ls -l /usr/lib64/perl5/vendor_perl
+  register: usroutput31
+  ignore_errors: true
+- name: Output of /usr/lib64/perl5/vendor_perl delete
+  ansible.builtin.debug:
+    msg: "{{ usroutput31 }}"
+  ignore_errors: true
 
 # /usr/local/lib debug
 - name: Find /usr/local/lib output
@@ -166,13 +186,13 @@
     src: "/tmp/{{ item }}"
     dest: /
     remote_src: yes
-with_items:
-  - usr/local/lib64/perl5
-  - usr/local/share/perl5
-  - usr/lib64/perl5/vendor_perl
-  - usr/share/perl5/vendor_perl
-  - usr/lib64/perl5
-  - usr/share/perl5
+  with_items:
+    - usr/local/lib64/perl5
+    - usr/local/share/perl5
+    - usr/lib64/perl5/vendor_perl
+    - usr/share/perl5/vendor_perl
+    - usr/lib64/perl5
+    - usr/share/perl5
 
 # /usr/local/lib64/perl5 debug
 - name: Find /usr/local/lib64/perl5 output after
