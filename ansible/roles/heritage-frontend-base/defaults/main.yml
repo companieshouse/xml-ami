@@ -38,11 +38,4 @@ user_home_path_content:
   - htdocs
   - config
 
-user_home_path_content_delete:
-  - DATA
-  - MODULES
-  - htdocs
-  - config
-  - usr
-
 files_to_remove: 'oracle-instantclient*,*.tar.gz,get-pip*,Python*'

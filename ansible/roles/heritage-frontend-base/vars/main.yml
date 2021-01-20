@@ -21,3 +21,10 @@ http_config:
 
 user: xml
 group: chlservices
+
+user_home_path_content_delete:
+  - DATA
+  - MODULES
+  - htdocs
+  - config
+ 

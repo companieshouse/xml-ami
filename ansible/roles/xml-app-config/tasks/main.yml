@@ -1,4 +1,30 @@
 ---
+- name: Copy xerces libraries
+  copy:
+    src: /tmp/usr/local/lib/* 
+    dest: /usr/local/lib/
+    remote_src: yes
+
+# /usr/local/lib debug
+- name: Find /usr/local/lib output 2
+  command: ls -l /usr/local/lib
+  register: usrliboutput
+  ignore_errors: true
+- name: Output of /usr/local/lib 2
+  ansible.builtin.debug:
+    msg: "{{ usrliboutput }}"
+  ignore_errors: true
+
+# /usr/local/lib debug
+- name: Find /usr/local/lib/pkgconfig output 3
+  command: ls -l /usr/local/lib/pkgconfig
+  register: usrliboutput2
+  ignore_errors: true
+- name: Output of /usr/local/lib/pkgconfig 
+  ansible.builtin.debug:
+    msg: "{{ usrliboutput2 }}"
+  ignore_errors: true
+
 - name: Start and enable httpd
   service:
     name: httpd

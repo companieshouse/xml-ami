@@ -1,8 +1,8 @@
-warn "Executing xmllive_startup.pl...\n";
+warn "Executing xml_startup.pl...\n";
 sleep 1;
  
 # Extend @INC if needed
-use lib qw(/etc/httpd/conf /home/xmllive/MODULES/ /home/xmllive/htdocs/XMLGW/ /home/xmllive/config);
+use lib qw(/etc/httpd/conf /home/xml/MODULES/ /home/xml/htdocs/XMLGW/ /home/xml/config);
  
 # Make sure we are in a sane environment.
 $ENV{MOD_PERL} or die "not running under mod_perl!";
@@ -73,5 +73,5 @@ $ENV{NLS_LANG}="ENGLISH_UNITED KINGDOM.UTF8";
 $ENV{TNS_ADMIN}="/usr/lib/oracle/11.2/client64/lib/";
 $ENV{LC_ALL}="en_GB.UTF-8";
  
-warn "xmllive_startup.pl - done\n";
+warn "xml_startup.pl - done\n";
 1;
