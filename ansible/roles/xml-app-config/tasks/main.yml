@@ -1,0 +1,17 @@
+---
+- name: Install xerces libraries
+  copy:
+    src: /tmp/usr/local/lib/ 
+    dest: /usr/local/lib/
+    remote_src: yes
+
+- name: Remove xerces libraries installation files
+  file:
+    path: /tmp/usr
+    state: absent
+ 
+- name: Start and enable httpd
+  service:
+    name: httpd
+    state: started
+    enabled: true

@@ -1,0 +1,15 @@
+---
+- name: Deploy Centos6.10 Container
+  hosts: localhost
+  gather_facts: false
+  vars:
+    inventory:
+      - name: xml-frontend
+        image: "centos:centos6.10"
+  roles:
+    - role: provision_docker
+      provision_docker_inventory: "{{ inventory }}"
+      provision_docker_privileged: True
+
+- import_playbook: ../playbook.yml
+
