@@ -183,7 +183,7 @@
 
 - name: Install Perl binaries
   copy:
-    src: "/tmp/{{ item }}"
+    src: "/tmp/{{ item }}/"
     dest: "/{{ item }}"
     remote_src: yes
   with_items:
@@ -193,6 +193,12 @@
     - usr/share/perl5
     - usr/lib64/perl5/vendor_perl
     - usr/share/perl5/vendor_perl
+
+#- name: Install Perl binaries - /usr/local/lib64/perl5
+  #copy:
+    #src: /tmp/usr/local/lib64/perl5
+    #dest: /usr/local/lib64/
+    #remote_src: yes
 
 # /usr/local/lib64/perl5 debug
 - name: Find /usr/local/lib64/perl5 output after
