@@ -186,13 +186,13 @@
     src: "/tmp/{{ item }}/"
     dest: "/{{ item }}"
     remote_src: yes
-  with_items:
-    - usr/local/lib64/perl5
-    - usr/local/share/perl5
-    - usr/lib64/perl5
-    - usr/share/perl5
-    - usr/lib64/perl5/vendor_perl
-    - usr/share/perl5/vendor_perl
+  with_items: '{{ perl_binaries }}'
+    #- usr/local/lib64/perl5
+    #- usr/local/share/perl5
+    #- usr/lib64/perl5
+    #- usr/share/perl5
+    #- usr/lib64/perl5/vendor_perl
+    #- usr/share/perl5/vendor_perl
 
 #- name: Install Perl binaries - /usr/local/lib64/perl5
   #copy:
@@ -210,6 +210,36 @@
     msg: "{{ usroutput25 }}"
   ignore_errors: true
 
+# usr/local/share/perl5 debug
+- name: Find /usr/local/share/perl5 output after
+  command: ls -l /usr/local/share/perl5
+  register: usroutput50
+  ignore_errors: true
+- name: Output of /usr/local/share/perl5
+  ansible.builtin.debug:
+    msg: "{{ usroutput50 }}"
+  ignore_errors: true
+
+# usr/lib64/perl5 debug
+- name: Find /usr/lib64/perl5 output after
+  command: ls -l /usr/lib64/perl5
+  register: usroutput51
+  ignore_errors: true
+- name: Output of /usr/lib64/perl5
+  ansible.builtin.debug:
+    msg: "{{ usroutput51 }}"
+  ignore_errors: true
+
+# usr/share/perl5 debug
+- name: Find /usr/share/perl5 output after
+  command: ls -l /usr/share/perl5
+  register: usroutput52
+  ignore_errors: true
+- name: Output of /usr/share/perl5
+  ansible.builtin.debug:
+    msg: "{{ usroutput52 }}"
+  ignore_errors: true
+
 # /usr/lib64/perl5/vendor_perl debug
 - name: Find /usr/lib64/perl5/vendor_perl output after
   command: ls -l /usr/lib64/perl5/vendor_perl
@@ -218,6 +248,16 @@
 - name: Output of /usr/lib64/perl5/vendor_perl
   ansible.builtin.debug:
     msg: "{{ usroutput26 }}"
+  ignore_errors: true
+
+# usr/share/perl5/vendor_perl debug
+- name: Find /usr/share/perl5/vendor_perl output after
+  command: ls -l /usr/share/perl5/vendor_perl
+  register: usroutput53
+  ignore_errors: true
+- name: Output of /usr/share/perl5/vendor_perl
+  ansible.builtin.debug:
+    msg: "{{ usroutput53 }}"
   ignore_errors: true
 
 # /usr/local/lib debug

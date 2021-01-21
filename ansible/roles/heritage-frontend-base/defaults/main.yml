@@ -25,10 +25,18 @@ ld_so_conf:
 perl_binaries:
   - /usr/local/lib64/perl5 
   - /usr/local/share/perl5 
-  - /usr/lib64/perl5/vendor_perl 
-  - /usr/share/perl5/vendor_perl 
+  #- /usr/lib64/perl5/vendor_perl 
+  #- /usr/share/perl5/vendor_perl 
   - /usr/lib64/perl5 
   - /usr/share/perl5
+
+#perl_binaries_install_order:
+  #- usr/local/lib64/perl5
+  #- usr/local/share/perl5
+  #- usr/lib64/perl5
+  #- usr/share/perl5
+  #- usr/lib64/perl5/vendor_perl
+  #- usr/share/perl5/vendor_perl
 
 http_conf: /etc/httpd/conf/httpd.conf
 
