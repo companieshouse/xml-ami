@@ -12,4 +12,3 @@
       provision_docker_privileged: True
 
 - import_playbook: ../playbook.yml
-
