@@ -1,58 +1,11 @@
 ---
-- hosts: xml-ami
+- name: AMI Build
+  hosts: xml-frontend
   become: true
+  gather_facts: yes
+  vars:
+    ansible_python_interpreter: /usr/local/bin/python3.6
   roles:
-    - centos6-base-repo
-    - role: RHEL6-CIS
-      vars:
-        rhel6cis_time_synchronization: chrony
-        rhel6cis_time_synchronization_servers: ["169.254.169.123"] #Default VPC source
-        rhel6cis_firewall: "iptables"
-        #Disable rsyslog/syslog-ng, using cloudwatch
-        rhel6cis_rule_4_2_3: false
-        rhel6cis_rule_4_2_1_1: false
-        rhel6cis_rule_4_2_1_2: false
-        rhel6cis_rule_4_2_1_3: false
-        rhel6cis_rule_4_2_1_4: false
-        rhel6cis_rule_4_2_1_5: false
-        rhel6cis_rule_4_2_2_1: false
-        rhel6cis_rule_4_2_2_2: false
-        rhel6cis_rule_4_2_2_3: false
-        rhel6cis_rule_4_2_2_4: false
-        rhel6cis_rule_4_2_2_5: false
-        rhel6cis_rule_4_3: false
-        #Disable GRUB tasks
-        rhel6cis_rule_1_4_2: false
-        rhel6cis_rule_1_6_1_1: false
-        rhel6cis_rule_4_1_3: false
-        #Disable Firewall Tasks, we manage this in app deploy
-        rhel6cis_rule_3_6_1: false
-        rhel6cis_rule_3_6_2: false
-        rhel6cis_rule_3_6_3: false
-        rhel6cis_rule_3_6_4: false
-        rhel6cis_rule_3_6_5: false
-    - epel
-    - role: clamav
-      vars: 
-        clamav_daemon_configuration_changes:
-          - regexp: '^.*Example$'
-            state: absent
-          - regexp: '^.*LocalSocket .*$'
-            line: 'LocalSocket {{ clamav_daemon_localsocket }}'
-    - role: cloudwatch-agent
-      vars:
-        cwa_conf_json_file_content: "{{ lookup('file', 'files/cloudwatch-config.json') }}"
-    - role: nagios_nrpe_client
-      vars: 
-        nrpe_server_allowed_hosts:
-          - 127.0.0.1
-        nrpe_plugin_packages:
-          - nagios-plugins-nrpe
-          - nagios-plugins
-          - nagios-plugins-disk
-        nrpe_command:
-          check_disk_all:
-            script: check_disk
-            option: -w 80 -c 90
-        nrpe_config: 
-          dont_blame_nrpe: 0
+    - role: heritage-frontend-base
+    - role: xml-app-config
+
