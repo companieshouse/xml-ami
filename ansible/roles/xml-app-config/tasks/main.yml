@@ -1,17 +1,60 @@
 ---
-- name: Install xerces libraries
-  copy:
-    src: /tmp/usr/local/lib/ 
-    dest: /usr/local/lib/
-    remote_src: yes
+  - name: Download app library archive from s3
+    aws_s3:
+      bucket: '{{ s3_bucket }}'
+      object: '{{ s3_file_perl_lib }}'
+      dest: "/tmp/{{ s3_file_perl_lib_name }}"
+      mode: get
+      
+  - name: Unarchive app library download
+    unarchive:
+      src: "/tmp/{{ s3_file_perl_lib_name }}"
+      dest: /tmp/
+      remote_src: yes
 
-- name: Remove xerces libraries installation files
-  file:
-    path: /tmp/usr
-    state: absent
- 
-- name: Start and enable httpd
-  service:
-    name: httpd
-    state: started
-    enabled: true
+  - name: Find xerces files in download directory
+    find:
+      paths: /tmp/usr/local/lib/
+      patterns: libxerces*
+      recurse: yes
+    register: libxerces-files
+    
+  - name: Install xerces libraries
+    copy:
+      src: "{{ item }}"
+      dest: /usr/local/lib/
+      remote_src: yes
+    with-items: "{{ libxerces-files.files }}"
+
+  - name: Remove temporary app library files
+    file:
+      path: /tmp/usr/
+      state: absent
+
+  - name: Install libapreq2 package for httpd mod_apreq2.so module requirement
+    vars:
+      ansible_python_interpreter: /usr/bin/python2.6
+    yum:
+        name: libapreq2
+        state: present
+  
+  - name: Copy config templates to relevant locations
+    vars:
+      ansible_python_interpreter: /usr/bin/python2.6
+    copy:
+      src: "{{ item }}"
+      dest: "/{{ item }}"
+      mode: 0755
+    loop:
+      - etc/httpd/conf/httpd.conf.j2
+      - etc/httpd/conf/startup.pl
+      - etc/httpd/conf.d/perl.conf
+      - home/xml/config/My/XMLGWConfig.pm.j2
+
+  - name: Copy deployment playbook onto server for build time
+    vars:
+      ansible_python_interpreter: /usr/bin/python2.6  
+    copy:
+      src: deployment.yml
+      dest: /root/deployment.yml
+      mode: 0755

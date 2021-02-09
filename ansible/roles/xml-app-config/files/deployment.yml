@@ -1,0 +1,53 @@
+---
+  - name: Deploy XML artifact
+    hosts: localhost
+    gather_facts: false
+    vars:
+      ansible_python_interpreter: /usr/local/bin/python3.6
+      application_name: "xmlgw"
+      home_dir: "/home/xml"
+      directories:
+        - "DATA" 
+        - "MODULES"
+        - "htdocs"
+    tasks:
+      - name: Download the versioned release artifact from S3
+        aws_s3:
+          bucket: "{{ s3_bucket }}"
+          object: "chl-perl/{{ application_name }}/{{ application_name }}-{{ version }}.zip"
+          dest: "/tmp/{{ application_name }}-{{ version }}.zip"
+          mode: get
+
+      - name: Create temporary app folder for unzip
+        file:
+          path: "/tmp/{{ application_name }}-{{ version }}"
+          state: directory
+      
+      - name: Unarchive the artifact into its own folder
+        unarchive:
+          remote_src: yes
+          src: "/tmp/{{ application_name }}-{{ version }}.zip"
+          dest: "/tmp/{{ application_name }}-{{ version }}"
+      
+      - name: Copy folders to relevant locations
+        vars:
+          ansible_python_interpreter: /usr/bin/python2.6
+        copy:
+          src: "/tmp/{{ application_name }}-{{ version }}/{{ item }}"
+          dest: "{{ home_dir }}/{{ item }}"
+          mode: preserve
+          owner: "{{ home_dir | basename }}"
+          remote_src: yes
+
+      - name: Create Matomo templates
+        command: perl -I {{ home_dir }}/config/ {{ home_dir }}/htdocs/efiling/templates/matomo.pl
+        args:
+          creates: "{{ home_dir }}/htdocs/efiling/templates/matomo.pl"
+
+      - name: Cleanup install files
+        file:
+          path: "{{ item }}"
+          state: absent
+        with_items:
+          - "/tmp/{{ application_name }}-{{ version }}"
+          - "/tmp/{{ application_name }}-{{ version }}.zip"

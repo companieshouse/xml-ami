@@ -273,7 +273,7 @@ ServerAdmin root@localhost
 # You will have to access it by its address anyway, and this will make 
 # redirections work in a sensible way.
 #
-ServerName REGEXREPLACE_SERVERNAME
+ServerName {{ env_service_name }}.{{ domain_name }}
 
 #
 # UseCanonicalName: Determines how Apache constructs self-referencing 
@@ -1112,4 +1112,3 @@ SetEnvIf X-Forwarded-HTTPS on HTTPS=on
   </Directory>
 #
 ### XML ### XML ### XML ### XML ### XML ### XML ### XML ### XML ###
-
