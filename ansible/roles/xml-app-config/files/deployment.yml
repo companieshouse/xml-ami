@@ -34,10 +34,11 @@
           ansible_python_interpreter: /usr/bin/python2.6
         copy:
           src: "/tmp/{{ application_name }}-{{ version }}/{{ item }}"
-          dest: "{{ home_dir }}/{{ item }}"
+          dest: "{{ home_dir }}/"
           mode: preserve
           owner: "{{ home_dir | basename }}"
           remote_src: yes
+        loop: "{{ directories }}"
 
       - name: Create Matomo templates
         command: perl -I {{ home_dir }}/config/ {{ home_dir }}/htdocs/efiling/templates/matomo.pl
@@ -51,3 +52,9 @@
         with_items:
           - "/tmp/{{ application_name }}-{{ version }}"
           - "/tmp/{{ application_name }}-{{ version }}.zip"
+
+      - name: Make sure Apache is started
+        service:
+          name: "httpd"
+          state: reloaded
+          enabled: yes
