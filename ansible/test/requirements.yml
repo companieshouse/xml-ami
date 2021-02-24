@@ -1,4 +1,9 @@
 ---
-- src: chrismeyersfsu.provision_docker
-  name: provision_docker
-  
+collections:
+  - name: https://github.com/companieshouse/ansible-collections.git#/ch_collections/enterpriselinux6
+    type: git
+    version: 0.1.6
+    
+roles: 
+  - src: chrismeyersfsu.provision_docker
+    name: provision_docker

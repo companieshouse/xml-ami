@@ -2,6 +2,8 @@
 
 Configure tasks specific to XML:
 
-Install xerces libraries
-
-Start and enable httpd
+Download library artifact
+Unarchive and move files to correct locations (Xerces, Perl)
+Copy templated config files to correct location as Jinja templates (.j2)
+Copy deployment script to user home for use in deployment at build time
+Clean up build files

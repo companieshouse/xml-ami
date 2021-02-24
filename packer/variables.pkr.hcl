@@ -1,3 +1,8 @@
+variable "ami_account_ids" {
+  type        = list(string)
+  description = "A list of account IDs that have access to launch the resulting AMI(s)"
+}
+
 variable "ami_name_prefix" {
   type        = string
   default     = "xml-frontend"
@@ -43,6 +48,11 @@ variable "aws_source_ami_owner_id" {
 variable "aws_subnet_filter_name" {
   type        = string
   description = "The subnet filter string. Any filter described by the DescribeSubnets API documentation is valid. If multiple subnets match then the one with the most IPv4 addresses free will be used"
+}
+
+variable "aws_s3_release_bucket" {
+  type        = string
+  description = "Bucket that contains any artifacts required to complete the build process, will be passed to Ansible"
 }
 
 variable "playbook_file_path" {
