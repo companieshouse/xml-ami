@@ -1,8 +1,9 @@
- ---
+---
+
 selinux_status:
   - policy: targeted
     state: permissive
-
+  
 users:
   - name: xml
     group: chlservices
