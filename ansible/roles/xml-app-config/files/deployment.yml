@@ -1,7 +1,7 @@
 ---
   - name: Deploy XML artifact
     hosts: localhost
-    gather_facts: false
+    gather_facts: true
     vars:
       ansible_python_interpreter: /usr/local/bin/python3.6
       application_name: "xmlgw"
@@ -39,7 +39,28 @@
           owner: "{{ home_dir | basename }}"
           remote_src: yes
         loop: "{{ directories }}"
+      
+      - name: Make sure config.pm directory exists
+        file:
+          path: "{{ home_dir }}/config/My"
+          state: directory
+          recurse: yes
+          mode: '0644'
 
+      - name: Download environment config.pm file from S3
+        aws_s3:
+          bucket: "{{ s3_bucket_configs }}"
+          object: "chl-{{ application_name }}-configs/{{ heritage_environment }}/{{ application_name|upper }}Config.pm"
+          dest: "{{ home_dir }}/config/My/{{ application_name|upper }}Config.pm"
+          mode: get
+
+      - name: Change config.pm owner and permissions
+        ansible.builtin.file:
+          path: "{{ home_dir }}/config/My/{{ application_name|upper }}Config.pm"
+          owner: ewf
+          group: chlservices
+          mode: '0644'
+      
       - name: Create Matomo templates
         command: perl -I {{ home_dir }}/config/ {{ home_dir }}/htdocs/efiling/templates/matomo.pl
         args:
@@ -56,5 +77,5 @@
       - name: Make sure Apache is started
         service:
           name: "httpd"
-          state: reloaded
+          state: restarted
           enabled: yes

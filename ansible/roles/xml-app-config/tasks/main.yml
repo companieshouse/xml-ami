@@ -12,24 +12,22 @@
       dest: /tmp/
       remote_src: yes
 
-  - name: Find xerces files in download directory
-    find:
-      paths: /tmp/usr/local/lib/
-      patterns: libxerces*
-      recurse: yes
-    register: libxerces-files
-    
-  - name: Install xerces libraries
+  - name: Install xerces files and binaries
+    vars:
+      ansible_python_interpreter: /usr/bin/python2.6
     copy:
-      src: "{{ item }}"
-      dest: /usr/local/lib/
+      src: "/tmp/{{ item }}/"
+      dest: "/{{ item }}"
       remote_src: yes
-    with-items: "{{ libxerces-files.files }}"
+    with_items: '{{ xerces_paths }}'
 
   - name: Remove temporary app library files
     file:
-      path: /tmp/usr/
+      path: "/tmp/{{ item }}/"
       state: absent
+    with_items:
+      - usr
+      - etc
 
   - name: Install libapreq2 package for httpd mod_apreq2.so module requirement
     vars:

@@ -10,10 +10,14 @@ users:
     
 user_home_path: /home/xml
 
-s3_file_perl_lib: /application/xml/frontend/xml-frontend-static.tar.gz
+s3_file_perl_lib: /application/shared/libraries/perl-xerces-lib.tar.gz
 s3_file_perl_lib_name: '{{ s3_file_perl_lib | basename }}'
 
 tar_files:
   - "{{ s3_file_perl_lib_name }}"
+
+xerces_paths:
+  - /usr/local/lib
+  - /usr/local/include
 
 install_watcher_service: true
