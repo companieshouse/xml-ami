@@ -57,7 +57,7 @@
       - name: Change config.pm owner and permissions
         ansible.builtin.file:
           path: "{{ home_dir }}/config/My/{{ application_name|upper }}Config.pm"
-          owner: ewf
+          owner: xml
           group: chlservices
           mode: '0644'
       
