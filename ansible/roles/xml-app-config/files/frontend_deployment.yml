@@ -74,6 +74,17 @@
           - "/tmp/{{ application_name }}-{{ version }}"
           - "/tmp/{{ application_name }}-{{ version }}.zip"
 
+      - name: Ensure apache config files are all owned and permissions are set correctly
+        ansible.builtin.file:
+          path: "{{ item }}"
+          owner: xml
+          group: chlservices
+          mode: '0644'
+        loop:
+          - /etc/httpd/conf/httpd.conf
+          - /etc/httpd/conf/startup.pl
+          - /etc/httpd/conf.d/perl.conf
+
       - name: Make sure Apache is started
         service:
           name: "httpd"
