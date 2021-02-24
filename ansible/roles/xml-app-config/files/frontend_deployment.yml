@@ -13,7 +13,7 @@
     tasks:
       - name: Download the versioned release artifact from S3
         aws_s3:
-          bucket: "{{ s3_bucket }}"
+          bucket: "{{ s3_bucket_releases }}"
           object: "chl-perl/{{ application_name }}/{{ application_name }}-{{ version }}.zip"
           dest: "/tmp/{{ application_name }}-{{ version }}.zip"
           mode: get
