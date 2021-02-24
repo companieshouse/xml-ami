@@ -52,6 +52,6 @@
     vars:
       ansible_python_interpreter: /usr/bin/python2.6  
     copy:
-      src: deployment.yml
-      dest: /root/deployment.yml
+      src: frontend_deployment.yml
+      dest: /root/frontend_deployment.yml
       mode: 0755
