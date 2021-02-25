@@ -61,11 +61,6 @@
           group: chlservices
           mode: '0644'
       
-      - name: Create Matomo templates
-        command: perl -I {{ home_dir }}/config/ {{ home_dir }}/htdocs/efiling/templates/matomo.pl
-        args:
-          creates: "{{ home_dir }}/htdocs/efiling/templates/matomo.pl"
-
       - name: Cleanup install files
         file:
           path: "{{ item }}"
