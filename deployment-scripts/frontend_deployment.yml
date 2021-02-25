@@ -10,6 +10,8 @@
         - "DATA" 
         - "MODULES"
         - "htdocs"
+    roles:
+      - { role: /root/roles/nfs_mounts }
     tasks:
       - name: Download the versioned release artifact from S3
         aws_s3:
