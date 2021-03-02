@@ -1,49 +1,59 @@
 ---
-  - name: Download app library archive from s3
-    aws_s3:
-      bucket: '{{ s3_bucket }}'
-      object: '{{ s3_file_perl_lib }}'
-      dest: "/tmp/{{ s3_file_perl_lib_name }}"
-      mode: get
-      
-  - name: Unarchive app library download
-    unarchive:
-      src: "/tmp/{{ s3_file_perl_lib_name }}"
-      dest: /tmp/
-      remote_src: yes
+- name: Download app library archive from s3
+  aws_s3:
+    bucket: '{{ s3_bucket }}'
+    object: '{{ s3_file_perl_lib }}'
+    dest: "/tmp/{{ s3_file_perl_lib_name }}"
+    mode: get
+    
+- name: Unarchive app library download
+  unarchive:
+    src: "/tmp/{{ s3_file_perl_lib_name }}"
+    dest: /tmp/
+    remote_src: yes
 
-  - name: Install xerces files and binaries
-    vars:
-      ansible_python_interpreter: /usr/bin/python2.6
-    copy:
-      src: "/tmp/{{ item }}/"
-      dest: "/{{ item }}"
-      remote_src: yes
-    with_items: '{{ xerces_paths }}'
+- name: Install xerces files and binaries
+  vars:
+    ansible_python_interpreter: /usr/bin/python2.6
+  copy:
+    src: "/tmp/{{ item }}/"
+    dest: "/{{ item }}"
+    remote_src: yes
+  with_items: '{{ xerces_paths }}'
 
-  - name: Remove temporary app library files
-    file:
-      path: "/tmp/{{ item }}/"
-      state: absent
-    with_items:
-      - usr
-      - etc
+- name: Remove temporary app library files
+  file:
+    path: "/tmp/{{ item }}/"
+    state: absent
+  with_items:
+    - usr
+    - etc
 
-  - name: Install libapreq2 package for httpd mod_apreq2.so module requirement
-    vars:
-      ansible_python_interpreter: /usr/bin/python2.6
-    yum:
-        name: libapreq2
-        state: present
-  
-  - name: Copy config templates to relevant locations
-    vars:
-      ansible_python_interpreter: /usr/bin/python2.6
-    copy:
-      src: "{{ item }}"
-      dest: "/{{ item }}"
-      mode: 0755
-    loop:
-      - etc/httpd/conf/httpd.conf.j2
-      - etc/httpd/conf/startup.pl
-      - etc/httpd/conf.d/perl.conf.j2
+- name: Install libapreq2 package for httpd mod_apreq2.so module requirement
+  vars:
+    ansible_python_interpreter: /usr/bin/python2.6
+  yum:
+      name: libapreq2
+      state: present
+
+- name: Copy config templates to relevant locations
+  vars:
+    ansible_python_interpreter: /usr/bin/python2.6
+  copy:
+    src: "{{ item }}"
+    dest: "/{{ item }}"
+    mode: 0755
+  loop:
+    - etc/httpd/conf/httpd.conf.j2
+    - etc/httpd/conf/startup.pl
+    - etc/httpd/conf.d/perl.conf.j2
+
+- name: Copy deployment scripts to server for later use
+  vars:
+    ansible_python_interpreter: /usr/bin/python2.6
+  copy:
+    src: "{{ item }}"
+    dest: "/{{ item }}"
+    mode: 0755
+  loop:
+    - deployment-scripts/frontend_deployment.yml
