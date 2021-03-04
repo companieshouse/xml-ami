@@ -47,7 +47,7 @@
           path: "{{ home_dir }}/config/My"
           state: directory
           recurse: yes
-          mode: '0644'
+          mode: '0755'
 
       - name: Download environment config.pm file from S3
         aws_s3:
@@ -61,7 +61,7 @@
           path: "{{ home_dir }}/config/My/{{ application_name|upper }}Config.pm"
           owner: xml
           group: chlservices
-          mode: '0644'
+          mode: '0755'
       
       - name: Cleanup install files
         file:
