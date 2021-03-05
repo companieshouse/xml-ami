@@ -1,0 +1,95 @@
+---
+  - name: Deploy XML Backend artifact
+    hosts: localhost
+    gather_facts: true
+    vars:
+      ansible_python_interpreter: /usr/local/bin/python3.6
+      application_name: "xmlgw-backend"
+      home_dir: "/home/xml"
+      directories:
+        - "DATA" 
+        - "MODULES"
+        - "chd3backend"
+        - "efbackend"
+        - "conf"
+    roles:
+      - { role: /root/roles/nfs_mounts }
+    tasks:
+      - name: Download the versioned release artifact from S3
+        aws_s3:
+          bucket: "{{ s3_bucket_releases }}"
+          object: "chl-perl/{{ application_name }}/{{ application_name }}-{{ version }}.zip"
+          dest: "/tmp/{{ application_name }}-{{ version }}.zip"
+          mode: get
+
+      - name: Create temporary app folder for unzip
+        file:
+          path: "/tmp/{{ application_name }}-{{ version }}"
+          state: directory
+      
+      - name: Unarchive the artifact into its own folder
+        unarchive:
+          remote_src: yes
+          src: "/tmp/{{ application_name }}-{{ version }}.zip"
+          dest: "/tmp/{{ application_name }}-{{ version }}"
+      
+      - name: Copy folders to relevant locations
+        vars:
+          ansible_python_interpreter: /usr/bin/python2.6
+        copy:
+          src: "/tmp/{{ application_name }}-{{ version }}/{{ item }}"
+          dest: "{{ home_dir }}/"
+          mode: preserve
+          owner: "{{ home_dir | basename }}"
+          remote_src: yes
+        loop: "{{ directories }}"
+      
+      - name: Symlinking "My::" to modules
+        ansible.builtin.file:
+          src: "{{ home_dir }}/config/My"
+          path: "{{ home_dir }}/modules/"
+          owner: xml
+          group: chlservices
+          mode: '0644'
+          state: link
+
+      - name: Make sure config directory exists
+        file:
+          path: "{{ home_dir }}/config/My"
+          state: directory
+          recurse: yes
+          mode: '755'
+
+      - name: Download environment config files from S3
+        aws_s3:
+          bucket: "{{ s3_bucket_configs }}"
+          object: "chl-{{ application_name }}-configs/{{ heritage_environment }}/{{ item | upper }}Config.pm"
+          dest: "{{ home_dir }}/config/My/{{ item | upper }}Config.pm"
+          mode: get
+        with_items:
+          - BEP
+          - EWF
+
+      - name: Change config owners and permissions
+        ansible.builtin.file:
+          path: "{{ home_dir }}/config/My/{{ item | upper }}Config.pm"
+          owner: xml
+          group: chlservices
+          mode: '755'
+        with_items:
+          - BEP
+          - EWF
+
+      - name: Cleanup install files
+        file:
+          path: "{{ item }}"
+          state: absent
+        with_items:
+          - "/tmp/{{ application_name }}-{{ version }}"
+          - "/tmp/{{ application_name }}-{{ version }}.zip"
+
+      - name: Make sure Apache is disabled and stopped
+        service:
+          name: "httpd"
+          state: stopped
+          enabled: no
