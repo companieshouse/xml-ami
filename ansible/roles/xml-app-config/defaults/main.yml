@@ -6,3 +6,5 @@
   tar_files:
     - "{{ s3_file_perl_lib_name }}"
   
+  ansible_deploy_playbook_directory: "/root"
+  
