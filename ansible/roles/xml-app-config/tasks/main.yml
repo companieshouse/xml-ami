@@ -70,6 +70,6 @@
     - requirements.yml
 
 - name: Setup deployment playbook dependancies (2/2)
-  command: "ansible-galaxy install -f -r {{ansible_deploy_playbook_directory}}/requirements.yml"
+  command: "/usr/local/bin/ansible-galaxy install -f -r {{ansible_deploy_playbook_directory}}/requirements.yml"
   register: requirements_output
   changed_when: '"was installed successfully" in requirements_output.stdout'
