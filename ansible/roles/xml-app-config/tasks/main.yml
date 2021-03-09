@@ -53,8 +53,23 @@
     ansible_python_interpreter: /usr/bin/python2.6
   copy:
     src: "{{ item }}"
-    dest: "/root/{{ item | basename}}"
+    dest: "{{ ansible_deploy_playbook_directory }}/{{ item | basename}}"
     mode: 0755
   loop:
     - deployment-scripts/frontend_deployment.yml
     - deployment-scripts/backend_deployment.yml
+
+- name: Setup deployment playbook dependancies (1/2)
+  vars:
+    ansible_python_interpreter: /usr/bin/python2.6  
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_deploy_playbook_directory }}/"
+    mode: 0755
+  loop: 
+    - requirements.yml
+
+- name: Setup deployment playbook dependancies (2/2)
+  command: "/usr/local/bin/ansible-galaxy install -f -r {{ansible_deploy_playbook_directory}}/requirements.yml"
+  register: requirements_output
+  changed_when: '"was installed successfully" in requirements_output.stdout'
