@@ -2,6 +2,8 @@
   - name: Deploy XML artifact
     hosts: localhost
     gather_facts: true
+    collections: 
+      - ch_collections.base
     vars:
       ansible_python_interpreter: /usr/local/bin/python3.6
       application_name: "xmlgw"
@@ -12,6 +14,7 @@
         - "htdocs"
     roles:
       - { role: /root/roles/nfs_mounts }
+      - ch_collections.base.cloudwatch_agent_config
     tasks:
       - name: Download the versioned release artifact from S3
         aws_s3:
