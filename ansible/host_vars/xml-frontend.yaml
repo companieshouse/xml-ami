@@ -22,3 +22,18 @@ xerces_paths:
   - /usr/local/include
 
 install_watcher_service: true
+
+postfix_main_config_file: main.cf
+postfix_config:
+  - key: mydomain
+    value: companieshouse.gov.uk
+  - key: myorigin 
+    value: $mydomain
+  - key: relayhost
+    value: smtp-outbound.sharedservices.aws.internal
+
+postfix_net_config:
+  - key: inet_interfaces 
+    value: all
+  - key: inet_protocols 
+    value: ipv4
