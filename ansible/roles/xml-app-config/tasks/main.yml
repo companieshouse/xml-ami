@@ -48,6 +48,21 @@
     - etc/httpd/conf/startup.pl
     - etc/httpd/conf.d/perl.conf.j2
 
+- name: Update Postfix configuration for mail relay (existing commented lines)
+  lineinfile:
+    dest: "/etc/postfix/{{ postfix_main_config_file }}"
+    line: "{{ item.key }} = {{ item.value }}"
+    regexp: "^#{{ item.key }} ="
+    insertafter: "^#{{ item.key }} ="
+  with_items: "{{ postfix_config }}"
+
+- name: Update Postfix network config (existing uncommented lines)
+  lineinfile:
+    dest: "/etc/postfix/{{ postfix_main_config_file }}"
+    line: "{{ item.key }} = {{ item.value }}"
+    regexp: "^{{ item.key }} ="
+  with_items: "{{ postfix_net_config }}"
+
 - name: Copy deployment scripts to server for later use
   vars:
     ansible_python_interpreter: /usr/bin/python2.6
