@@ -41,8 +41,9 @@
         copy:
           src: "/tmp/{{ application_name }}-{{ version }}/{{ item }}"
           dest: "{{ home_dir }}/"
-          mode: preserve
+          mode: '0755'
           owner: "{{ home_dir | basename }}"
+          group: chlservices
           remote_src: yes
         loop: "{{ directories }}"
       
