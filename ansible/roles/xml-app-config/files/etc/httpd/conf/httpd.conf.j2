@@ -1014,7 +1014,7 @@ BrowserMatch "^Dreamweaver-WebDAV-SCM1" redirect-carefully
 # sets the HTTPS env var to mimic the function of mod_ssl, this essentially replaces the
 # need for mod_ssl configuration that follows
 
-SetEnvIf X-Forwarded-HTTPS on HTTPS=on
+SetEnvIf X-Forwarded-Proto “https” HTTPS=on
 
 
  ###Alias added for CR96269###
