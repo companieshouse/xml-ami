@@ -7,6 +7,7 @@
   vars:
     ansible_python_interpreter: /usr/local/bin/python3.6
   roles:
+    - ch_collections.base.nagios_nrpe_client
     - ch_collections.heritage_services.heritage_frontend_base
     - ch_collections.heritage_services.nfs
     - xml-app-config
