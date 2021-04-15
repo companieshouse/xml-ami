@@ -2,12 +2,15 @@
 - hosts: xml-frontend
   become: true
   gather_facts: yes
-  collections: 
-    - ch-collections.base
+  roles:
+    - ch_collections.base.nagios_nrpe_client
+
+- hosts: xml-frontend
+  become: true
+  gather_facts: yes
   vars:
     ansible_python_interpreter: /usr/local/bin/python3.6
   roles:
-    - ch_collections.base.nagios_nrpe_client
     - ch_collections.heritage_services.heritage_frontend_base
     - ch_collections.heritage_services.nfs
     - xml-app-config
