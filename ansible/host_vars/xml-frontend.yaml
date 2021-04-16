@@ -68,7 +68,7 @@ nrpe_command:
   check_httpd:
     script: check_service.sh
     option: $ARG1$
-  check_rsyslogd:
+  check_syslogd:
     script: check_service.sh
     option: $ARG1$
   check_users:
