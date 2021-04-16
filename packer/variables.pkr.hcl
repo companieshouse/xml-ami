@@ -98,6 +98,6 @@ variable "kms_key_id" {
 
 variable "nagios_api_key" {
   type        = string
-  default     = null
+  default     = ""
   description = "This key will be supplied to the Nagios agent Ansible role to populate jinja templates"
 }
