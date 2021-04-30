@@ -39,6 +39,7 @@ postfix_net_config:
     value: ipv4
 
 ## Nagios Variables
+auto_register_client: true
 nagios_host: nagios.sharedservices.aws.internal
 server_template_name: "XML_Server"
 nrpe_allowed_hosts:
