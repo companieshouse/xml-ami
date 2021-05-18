@@ -63,6 +63,19 @@
     regexp: "^{{ item.key }} ="
   with_items: "{{ postfix_net_config }}"
 
+- name: Enable crontab for XML user
+  lineinfile:
+    dest: "/etc/cron.allow"
+    line: "xml"
+    regexp: "^xml"
+
+- name: Allow xml to use apachectl 
+  copy:
+    dest: "/etc/sudoers.d/xml"
+    content: |
+      # XML user
+      xml ALL=(ALL) NOPASSWD:/usr/sbin/apachectl
+  
 - name: Copy deployment scripts to server for later use
   vars:
     ansible_python_interpreter: /usr/bin/python2.6
