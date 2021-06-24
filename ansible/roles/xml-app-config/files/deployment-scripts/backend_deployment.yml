@@ -17,6 +17,8 @@
       config_files:
         - "BEP"
         - "EWF"
+      supportscripts_file: "supportscripts"
+      supportscripts_location: "/home/supportbackend"  
     roles:
       - { role: /root/roles/nfs_mounts }
       - name: ch_collections.base.cloudwatch_agent_config
@@ -40,7 +42,7 @@
           src: "/tmp/{{ application_name }}-{{ version }}.zip"
           dest: "/tmp/{{ application_name }}-{{ version }}"
       
-      - name: Copy folders to relevant locations
+      - name: Copy app directories to app user home
         vars:
           ansible_python_interpreter: /usr/bin/python2.6
         copy:
@@ -51,6 +53,17 @@
           mode: preserve
           remote_src: yes
         loop: "{{ directories }}"
+
+      - name: Copy support scripts to support user home
+        vars:
+          ansible_python_interpreter: /usr/bin/python2.6
+        copy:
+          src: "/tmp/{{ application_name }}-{{ version }}/{{ supportscripts_file }}"
+          dest: "{{ supportscripts_location }}/"
+          owner: "{{ supportscripts_location | basename }}"
+          group: chlservices
+          mode: preserve
+          remote_src: yes
 
       - name: Make sure config directory exists
         file:
