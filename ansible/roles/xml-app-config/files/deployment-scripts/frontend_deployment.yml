@@ -12,9 +12,9 @@
         - "DATA"
         - "MODULES"
         - "htdocs"
+        - supportscripts"
       config_files:
         - "XMLGW"
-      supportscripts_file: "supportscripts"
     roles:
       - { role: /root/roles/nfs_mounts }
       - name: ch_collections.base.cloudwatch_agent_config
@@ -49,17 +49,6 @@
           group: chlservices
           remote_src: yes
         loop: "{{ directories }}"
-
-      - name: Copy support scripts to app user home
-        vars:
-          ansible_python_interpreter: /usr/bin/python2.6
-        copy:
-          src: "/tmp/{{ application_name }}-{{ version }}/{{ supportscripts_file }}"
-          dest: "{{ home_dir }}/"
-          owner: "{{ home_dir | basename }}"
-          group: chlservices
-          mode: preserve
-          remote_src: yes
 
       - name: Make sure config.pm directory exists
         file:
