@@ -15,8 +15,6 @@
         - "supportscripts"
       config_files:
         - "XMLGW"
-      supportscripts_file: "supportscripts"
-      supportscripts_location: "/home/supportbackend"
     roles:
       - { role: /root/roles/nfs_mounts }
       - name: ch_collections.base.cloudwatch_agent_config
@@ -51,6 +49,7 @@
           group: chlservices
           remote_src: yes
         loop: "{{ directories }}"
+<<<<<<< HEAD
 
       - name: Copy support scripts to support user home
         vars:
@@ -62,6 +61,8 @@
           group: chlservices
           mode: preserve
           remote_src: yes
+=======
+>>>>>>> master
 
       - name: Make sure config.pm directory exists
         file:
