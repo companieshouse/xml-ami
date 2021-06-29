@@ -49,20 +49,6 @@
           group: chlservices
           remote_src: yes
         loop: "{{ directories }}"
-<<<<<<< HEAD
-
-      - name: Copy support scripts to support user home
-        vars:
-          ansible_python_interpreter: /usr/bin/python2.6
-        copy:
-          src: "/tmp/{{ application_name }}-{{ version }}/{{ supportscripts_file }}"
-          dest: "{{ supportscripts_location }}/"
-          owner: "{{ supportscripts_location | basename }}"
-          group: chlservices
-          mode: preserve
-          remote_src: yes
-=======
->>>>>>> master
 
       - name: Make sure config.pm directory exists
         file:
