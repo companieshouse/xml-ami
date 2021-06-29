@@ -2,23 +2,24 @@
   - name: Deploy XML Backend artifact
     hosts: localhost
     gather_facts: true
-    collections: 
+    collections:
       - ch_collections.base
     vars:
       ansible_python_interpreter: /usr/local/bin/python3.6
       application_name: "xmlgw-backend"
       home_dir: "/home/xml"
       directories:
-        - "DATA" 
+        - "DATA"
         - "MODULES"
         - "chd3backend"
         - "efbackend"
         - "conf"
+        - "supportscripts"
       config_files:
         - "BEP"
         - "EWF"
       supportscripts_file: "supportscripts"
-      supportscripts_location: "/home/supportbackend"  
+      supportscripts_location: "/home/supportbackend"
     roles:
       - { role: /root/roles/nfs_mounts }
       - name: ch_collections.base.cloudwatch_agent_config
@@ -35,13 +36,13 @@
         file:
           path: "/tmp/{{ application_name }}-{{ version }}"
           state: directory
-      
+
       - name: Unarchive the artifact into its own folder
         unarchive:
           remote_src: yes
           src: "/tmp/{{ application_name }}-{{ version }}.zip"
           dest: "/tmp/{{ application_name }}-{{ version }}"
-      
+
       - name: Copy app directories to app user home
         vars:
           ansible_python_interpreter: /usr/bin/python2.6
