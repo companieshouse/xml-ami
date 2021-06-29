@@ -4,7 +4,7 @@ collections:
     version: 0.1.36
     type: git
   - name: git@github.com:companieshouse/ansible-collections.git#/ch_collections/heritage_services
-    version: 0.1.53
+    version: 0.1.54
     type: git
 
   - name: ansible.posix
