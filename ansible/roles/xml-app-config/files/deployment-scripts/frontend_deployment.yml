@@ -12,7 +12,7 @@
         - "DATA"
         - "MODULES"
         - "htdocs"
-        - supportscripts"
+        - "supportscripts"
       config_files:
         - "XMLGW"
     roles:

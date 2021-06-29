@@ -14,7 +14,7 @@
         - "chd3backend"
         - "efbackend"
         - "conf"
-        - supportscripts"
+        - "supportscripts"
       config_files:
         - "BEP"
         - "EWF"
