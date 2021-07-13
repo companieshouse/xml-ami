@@ -41,7 +41,7 @@ postfix_net_config:
 ## Nagios Variables
 auto_register_client: true
 nagios_host: nagios.sharedservices.aws.internal
-server_template_name: "XML_Server"
+server_template_name: "XML"
 nrpe_allowed_hosts:
   - "127.0.0.1"
   - "10.44.12.0/24"
@@ -65,10 +65,6 @@ nrpe_command:
     script: check_service.sh
     option: $ARG1$
   check_crond:
-    sudo: true
-    script: check_service.sh
-    option: $ARG1$
-  check_httpd:
     sudo: true
     script: check_service.sh
     option: $ARG1$
