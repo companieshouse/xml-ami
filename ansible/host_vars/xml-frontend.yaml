@@ -68,6 +68,10 @@ nrpe_command:
     sudo: true
     script: check_service.sh
     option: $ARG1$
+  check_httpd:
+    sudo: true
+    script: check_service.sh
+    option: $ARG1$
   check_syslogd:
     sudo: true
     script: check_service.sh
