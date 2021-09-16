@@ -55,6 +55,8 @@
           path: "{{ home_dir }}/config/My"
           state: directory
           recurse: yes
+          owner: "{{ home_dir | basename }}"
+          group: chlservices
           mode: '0755'
 
       - name: Download environment config files from S3
