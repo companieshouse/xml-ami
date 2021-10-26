@@ -2,7 +2,7 @@
 collections:
   - name: https://github.com/companieshouse/ansible-collections.git#/ch_collections/enterpriselinux6
     type: git
-    version: 0.1.6
+    version: 0.1.88
     
 roles: 
   - src: chrismeyersfsu.provision_docker
