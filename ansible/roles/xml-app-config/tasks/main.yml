@@ -75,7 +75,10 @@
     content: |
       # XML user
       xml ALL=(ALL) NOPASSWD:/usr/sbin/apachectl
-  
+
+- name: Disable password expiry for XML user so it doesnt break cron
+  command: "chage -m 0 -M 99999 -I -1 -E -1 xml"
+
 - name: Copy deployment scripts to server for later use
   vars:
     ansible_python_interpreter: /usr/bin/python2.6
