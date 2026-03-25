@@ -120,12 +120,6 @@ variable "version" {
   description = "The semantic version number for the AMI; the version string will be appended automatically to the name tags added to the resulting AMI and snapshot(s)"
 }
 
-variable "encrypt_boot" {
-  type        = bool
-  default     = false
-  description = "Whether to encrypt the root volume of the AMI (and instances created from it)"
-}
-
 variable "kms_key_id" {
   type        = string
   default     = null
