@@ -1,9 +1,4 @@
 ---  
-- hosts: xml-frontend
-  become: true
-  gather_facts: yes
-  roles:
-    - ch_collections.base.nagios_nrpe_client
 
 - hosts: xml-frontend
   become: true
